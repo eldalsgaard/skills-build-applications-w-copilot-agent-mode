@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import getApiBaseUrl from '../utils/api';
 
 const Leaderboard = () => {
   const [leaders, setLeaders] = useState([]);
   useEffect(() => {
-    const endpoint = `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/leaderboard/`;
+    const endpoint = `${getApiBaseUrl()}/api/leaderboard/`;
     console.log('Fetching Leaderboard from:', endpoint);
     fetch(endpoint)
       .then(res => res.json())
@@ -20,16 +21,16 @@ const Leaderboard = () => {
         <table className="table table-striped table-bordered">
           <thead className="table-dark">
             <tr>
-              <th>Name</th>
-              <th>Score</th>
+              <th>Team</th>
+              <th>Points</th>
               <th>Rank</th>
             </tr>
           </thead>
           <tbody>
             {leaders.map((leader, idx) => (
               <tr key={leader.id || idx}>
-                <td>{leader.name || '-'}</td>
-                <td>{leader.score || '-'}</td>
+                <td>{leader.team || '-'}</td>
+                <td>{leader.points || '-'}</td>
                 <td>{leader.rank || idx + 1}</td>
               </tr>
             ))}

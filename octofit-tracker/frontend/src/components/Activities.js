@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import getApiBaseUrl from '../utils/api';
 
 const Activities = () => {
   const [activities, setActivities] = useState([]);
   useEffect(() => {
-    const endpoint = `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/activities/`;
+    const endpoint = `${getApiBaseUrl()}/api/activities/`;
     console.log('Fetching Activities from:', endpoint);
     fetch(endpoint)
       .then(res => res.json())
@@ -20,17 +21,19 @@ const Activities = () => {
         <table className="table table-striped table-bordered">
           <thead className="table-dark">
             <tr>
-              <th>Name</th>
-              <th>Description</th>
+              <th>User</th>
               <th>Type</th>
+              <th>Duration</th>
+              <th>Date</th>
             </tr>
           </thead>
           <tbody>
             {activities.map((activity, idx) => (
               <tr key={activity.id || idx}>
-                <td>{activity.name || '-'}</td>
-                <td>{activity.description || '-'}</td>
+                <td>{activity.user || '-'}</td>
                 <td>{activity.type || '-'}</td>
+                <td>{activity.duration || '-'}</td>
+                <td>{activity.date || '-'}</td>
               </tr>
             ))}
           </tbody>

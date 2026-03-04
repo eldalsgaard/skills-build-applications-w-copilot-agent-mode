@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--qje9r&#4c+x)f=a*p(*%bt5074m*qr0$(o14z(*(ixti(ig#)'
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    'django-insecure--qje9r&#4c+x)f=a*p(*%bt5074m*qr0$(o14z(*(ixti(ig#)'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-import os
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 codespace_name = os.environ.get('CODESPACE_NAME', None)
 allowed_hosts = ['localhost', '127.0.0.1']
@@ -139,10 +141,33 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+]
+if codespace_name:
+    CORS_ALLOWED_ORIGINS.append(f"https://{codespace_name}-3000.app.github.dev")
+
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = ['*']
-CORS_ALLOW_METHODS = ['*']
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

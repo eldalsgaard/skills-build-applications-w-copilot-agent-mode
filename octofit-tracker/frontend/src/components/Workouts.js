@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import getApiBaseUrl from '../utils/api';
 
 const Workouts = () => {
   const [workouts, setWorkouts] = useState([]);
   useEffect(() => {
-    const endpoint = `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/workouts/`;
+    const endpoint = `${getApiBaseUrl()}/api/workouts/`;
     console.log('Fetching Workouts from:', endpoint);
     fetch(endpoint)
       .then(res => res.json())
@@ -21,16 +22,16 @@ const Workouts = () => {
           <thead className="table-dark">
             <tr>
               <th>Name</th>
-              <th>Type</th>
-              <th>Duration</th>
+              <th>Description</th>
+              <th>Suggested For</th>
             </tr>
           </thead>
           <tbody>
             {workouts.map((workout, idx) => (
               <tr key={workout.id || idx}>
                 <td>{workout.name || '-'}</td>
-                <td>{workout.type || '-'}</td>
-                <td>{workout.duration || '-'}</td>
+                <td>{workout.description || '-'}</td>
+                <td>{workout.suggested_for || '-'}</td>
               </tr>
             ))}
           </tbody>
