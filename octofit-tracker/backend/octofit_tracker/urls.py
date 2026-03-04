@@ -14,12 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from .views import UserViewSet, TeamViewSet, ActivityViewSet, WorkoutViewSet, LeaderboardViewSet
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+import os
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -31,15 +33,15 @@ router.register(r'leaderboard', LeaderboardViewSet)
 @api_view(['GET'])
 def api_root(request):
     return Response({
-        'users': request.build_absolute_uri('/users/'),
-        'teams': request.build_absolute_uri('/teams/'),
-        'activities': request.build_absolute_uri('/activities/'),
-        'workouts': request.build_absolute_uri('/workouts/'),
-        'leaderboard': request.build_absolute_uri('/leaderboard/'),
+        'users': request.build_absolute_uri('/api/users/'),
+        'teams': request.build_absolute_uri('/api/teams/'),
+        'activities': request.build_absolute_uri('/api/activities/'),
+        'workouts': request.build_absolute_uri('/api/workouts/'),
+        'leaderboard': request.build_absolute_uri('/api/leaderboard/'),
     })
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', api_root, name='api_root'),
-    path('', include(router.urls)),
+    path('api/', include(router.urls)),
 ]
