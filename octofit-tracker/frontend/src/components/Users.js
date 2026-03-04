@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import getApiBaseUrl from '../utils/api';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   useEffect(() => {
-    const endpoint = `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/users/`;
+    const endpoint = `${getApiBaseUrl()}/api/users/`;
     console.log('Fetching Users from:', endpoint);
     fetch(endpoint)
       .then(res => res.json())
@@ -22,7 +23,7 @@ const Users = () => {
             <tr>
               <th>Name</th>
               <th>Email</th>
-              <th>Joined</th>
+              <th>Team</th>
             </tr>
           </thead>
           <tbody>
@@ -30,7 +31,7 @@ const Users = () => {
               <tr key={user.id || idx}>
                 <td>{user.name || '-'}</td>
                 <td>{user.email || '-'}</td>
-                <td>{user.joined || '-'}</td>
+                <td>{user.team || '-'}</td>
               </tr>
             ))}
           </tbody>

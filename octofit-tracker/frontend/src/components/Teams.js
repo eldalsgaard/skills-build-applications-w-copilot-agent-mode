@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import getApiBaseUrl from '../utils/api';
 
 const Teams = () => {
   const [teams, setTeams] = useState([]);
   useEffect(() => {
-    const endpoint = `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/teams/`;
+    const endpoint = `${getApiBaseUrl()}/api/teams/`;
     console.log('Fetching Teams from:', endpoint);
     fetch(endpoint)
       .then(res => res.json())
@@ -21,16 +22,14 @@ const Teams = () => {
           <thead className="table-dark">
             <tr>
               <th>Name</th>
-              <th>Members</th>
-              <th>Score</th>
+              <th>Description</th>
             </tr>
           </thead>
           <tbody>
             {teams.map((team, idx) => (
               <tr key={team.id || idx}>
                 <td>{team.name || '-'}</td>
-                <td>{Array.isArray(team.members) ? team.members.join(', ') : '-'}</td>
-                <td>{team.score || '-'}</td>
+                <td>{team.description || '-'}</td>
               </tr>
             ))}
           </tbody>
