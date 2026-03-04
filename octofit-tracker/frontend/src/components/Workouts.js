@@ -1,0 +1,44 @@
+import React, { useEffect, useState } from 'react';
+import getApiBaseUrl from '../utils/api';
+
+const Workouts = () => {
+  const [workouts, setWorkouts] = useState([]);
+  useEffect(() => {
+    const endpoint = `${getApiBaseUrl()}/api/workouts/`;
+    console.log('Fetching Workouts from:', endpoint);
+    fetch(endpoint)
+      .then(res => res.json())
+      .then(data => {
+        const results = data.results || data;
+        setWorkouts(results);
+        console.log('Workouts data:', results);
+      });
+  }, []);
+  return (
+    <div className="card mb-4">
+      <div className="card-body">
+        <h2 className="card-title mb-4">Workouts</h2>
+        <table className="table table-striped table-bordered">
+          <thead className="table-dark">
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Suggested For</th>
+            </tr>
+          </thead>
+          <tbody>
+            {workouts.map((workout, idx) => (
+              <tr key={workout.id || idx}>
+                <td>{workout.name || '-'}</td>
+                <td>{workout.description || '-'}</td>
+                <td>{workout.suggested_for || '-'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <button className="btn btn-primary">Add Workout</button>
+      </div>
+    </div>
+  );
+};
+export default Workouts;
